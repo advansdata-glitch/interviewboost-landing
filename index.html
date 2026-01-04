@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>InterviewBoost — Préparez vos entretiens</title>
+  <meta name="description" content="Préparez-vous efficacement à vos entretiens avec InterviewBoost." />
+
+  <!-- Open Graph (aperçu partage / WhatsApp / LinkedIn) -->
+  <meta property="og:title" content="InterviewBoost" />
+  <meta property="og:description" content="Préparez-vous efficacement à vos entretiens." />
+  <meta property="og:type" content="website" />
+  <!-- Optionnel: ajoutez une image og (1200x630) et mettez son URL ici -->
+  <!-- <meta property="og:image" content="https://votreuser.github.io/interviewboost-landing/og-image.jpg" /> -->
+
+  <style>
+    :root { --max: 980px; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    header { padding: 20px 16px; border-bottom: 1px solid #eee; }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 16px; }
+    .top { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .brand { display:flex; align-items:center; gap:12px; }
+    .logo {
+      width:40px; height:40px; border-radius:10px;
+      display:inline-flex; align-items:center; justify-content:center;
+      border:1px solid #eee; font-weight:700;
+    }
+    .lang { display:flex; gap:8px; }
+    .lang button {
+      border:1px solid #ddd; background:#fff; padding:8px 10px;
+      border-radius:10px; cursor:pointer;
+    }
+    .hero { padding: 28px 0 10px; }
+    .grid { display:grid; grid-template-columns: 1.15fr 0.85fr; gap:18px; align-items:center; }
+    @media (max-width: 860px){ .grid { grid-template-columns: 1fr; } }
+    h1 { font-size: clamp(26px, 4vw, 42px); line-height: 1.1; margin: 0 0 10px; }
+    p { margin: 0 0 14px; font-size: 16px; line-height: 1.55; color:#222; }
+    .pill { display:inline-block; padding:6px 10px; border:1px solid #eee; border-radius:999px; font-size:13px; color:#333; }
+    .cta { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 12px 14px; border-radius: 14px; text-decoration:none;
+      border:1px solid #111; color:#111; font-weight:600;
+    }
+    .btn.primary { background:#111; color:#fff; }
+    .btn[aria-disabled="true"]{ opacity:.45; pointer-events:none; }
+    .card {
+      border:1px solid #eee; border-radius:16px; padding:14px;
+      background:#fafafa;
+    }
+    ul { margin:10px 0 0 18px; padding:0; }
+    li { margin: 6px 0; }
+    footer { padding: 18px 0 26px; color:#666; font-size: 13px; }
+    .rtl { direction: rtl; }
+    .small { font-size: 13px; color:#444; }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="wrap top">
+    <div class="brand">
+      <div class="logo">IB</div>
+      <div>
+        <div style="font-weight:800;">InterviewBoost</div>
+        <div class="small" id="subtitle">Préparez vos entretiens d’embauche</div>
+      </div>
+    </div>
+
+    <div class="lang" aria-label="Language selector">
+      <button type="button" onclick="setLang('fr')">FR</button>
+      <button type="button" onclick="setLang('en')">EN</button>
+      <button type="button" onclick="setLang('ar')">AR</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap hero" id="root">
+  <span class="pill" id="badge">Simulation • Feedback • Progression</span>
+
+  <div class="grid" style="margin-top:14px;">
+    <section>
+      <h1 id="title">Un entretien à venir ?</h1>
+      <p id="tagline">Entraînez-vous avec InterviewBoost et obtenez un feedback clair pour progresser rapidement.</p>
+
+      <div class="cta">
+        <a class="btn primary" id="btnAndroid" target="_blank" rel="noopener">Télécharger sur Google Play</a>
+        <a class="btn" id="btnIOS" target="_blank" rel="noopener">Télécharger sur l’App Store</a>
+      </div>
+
+      <p class="small" id="note" style="margin-top:10px;">
+        Astuce : si vous venez d’une publicité Meta, cette page sert de passerelle vers la boutique officielle.
+      </p>
+    </section>
+
+    <aside class="card">
+      <div style="font-weight:800; margin-bottom:6px;" id="whyTitle">Pourquoi InterviewBoost ?</div>
+      <ul id="bullets">
+        <li>Questions d’entretien réalistes et structurées</li>
+        <li>Entraînement rapide, quand vous voulez</li>
+        <li>Améliorez vos réponses et votre confiance</li>
+      </ul>
+      <div class="small" style="margin-top:10px;" id="privacy">
+        Respect de vos données : pas de vente de données personnelles.
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer class="wrap">
+  <div>© <span id="year"></span> InterviewBoost • Data-Advans</div>
+</footer>
+
+<script>
+  // 1) Mettez vos URLs officielles ici (Play Store recommandé).
+  const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=VOTRE_PACKAGE_NAME";
+  const APP_STORE_URL  = ""; // ex: https://apps.apple.com/app/idXXXXXXXXX (laissez vide si non disponible)
+
+  // 2) UTM (optionnel): conserver les paramètres de tracking passés depuis la pub
+  const qs = window.location.search || "";
+  const withUTM = (url) => {
+    if (!url) return "";
+    if (!qs) return url;
+    return url.includes("?") ? (url + "&" + qs.slice(1)) : (url + qs);
+  };
+
+  const i18n = {
+    fr: {
+      dir: "ltr",
+      subtitle: "Préparez vos entretiens d’embauche",
+      badge: "Simulation • Feedback • Progression",
+      title: "Un entretien à venir ?",
+      tagline: "Entraînez-vous avec InterviewBoost et obtenez un feedback clair pour progresser rapidement.",
+      btnAndroid: "Télécharger sur Google Play",
+      btnIOS: "Télécharger sur l’App Store",
+      note: "Astuce : si vous venez d’une publicité Meta, cette page sert de passerelle vers la boutique officielle.",
+      whyTitle: "Pourquoi InterviewBoost ?",
+      bullets: [
+        "Questions d’entretien réalistes et structurées",
+        "Entraînement rapide, quand vous voulez",
+        "Améliorez vos réponses et votre confiance"
+      ],
+      privacy: "Respect de vos données : pas de vente de données personnelles."
+    },
+    en: {
+      dir: "ltr",
+      subtitle: "Prepare for job interviews",
+      badge: "Practice • Feedback • Improve",
+      title: "Interview coming up?",
+      tagline: "Practice with InterviewBoost and get clear feedback to improve fast.",
+      btnAndroid: "Get it on Google Play",
+      btnIOS: "Download on the App Store",
+      note: "Tip: if you came from a Meta ad, this page redirects you to the official store.",
+      whyTitle: "Why InterviewBoost?",
+      bullets: [
+        "Realistic, structured interview questions",
+        "Quick practice anytime",
+        "Build stronger answers and confidence"
+      ],
+      privacy: "Data-friendly: we don’t sell personal data."
+    },
+    ar: {
+      dir: "rtl",
+      subtitle: "استعد لمقابلات العمل",
+      badge: "تدريب • ملاحظات • تطوير",
+      title: "هل لديك مقابلة قريباً؟",
+      tagline: "تدرّب مع InterviewBoost واحصل على ملاحظات واضحة لتتطور بسرعة.",
+      btnAndroid: "حمّل من Google Play",
+      btnIOS: "حمّل من App Store",
+      note: "ملاحظة: إذا وصلت من إعلان Meta، فهذه الصفحة توصلك إلى المتجر الرسمي.",
+      whyTitle: "لماذا InterviewBoost؟",
+      bullets: [
+        "أسئلة مقابلات واقعية ومنظمة",
+        "تدريب سريع في أي وقت",
+        "حسّن إجاباتك وثقتك"
+      ],
+      privacy: "خصوصيتك مهمة: لا نبيع بياناتك الشخصية."
+    }
+  };
+
+  function setLang(lang){
+    const t = i18n[lang] || i18n.fr;
+    document.documentElement.lang = lang;
+    document.body.classList.toggle("rtl", t.dir === "rtl");
+    document.getElementById("subtitle").textContent = t.subtitle;
+    document.getElementById("badge").textContent = t.badge;
+    document.getElementById("title").textContent = t.title;
+    document.getElementById("tagline").textContent = t.tagline;
+    document.getElementById("btnAndroid").textContent = t.btnAndroid;
+    document.getElementById("btnIOS").textContent = t.btnIOS;
+    document.getElementById("note").textContent = t.note;
+    document.getElementById("whyTitle").textContent = t.whyTitle;
+
+    const ul = document.getElementById("bullets");
+    ul.innerHTML = "";
+    t.bullets.forEach(b => {
+      const li = document.createElement("li");
+      li.textContent = b;
+      ul.appendChild(li);
+    });
+
+    document.getElementById("privacy").textContent = t.privacy;
+  }
+
+  // Init links
+  const a = document.getElementById("btnAndroid");
+  a.href = withUTM(PLAY_STORE_URL);
+
+  const b = document.getElementById("btnIOS");
+  if (APP_STORE_URL) {
+    b.href = withUTM(APP_STORE_URL);
+    b.removeAttribute("aria-disabled");
+  } else {
+    b.href = "#";
+    b.setAttribute("aria-disabled", "true");
+  }
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Default language by browser (fr/en/ar)
+  const nav = (navigator.language || "fr").toLowerCase();
+  if (nav.startsWith("ar")) setLang("ar");
+  else if (nav.startsWith("en")) setLang("en");
+  else setLang("fr");
+</script>
+</body>
+</html>
