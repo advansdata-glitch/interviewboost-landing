@@ -10,7 +10,7 @@
   <meta property="og:title" content="InterviewBoost" />
   <meta property="og:description" content="Simulations d’entretien réalistes + feedback immédiat. Préparez-vous efficacement." />
   <meta property="og:type" content="website" />
-  <!-- Optionnel (recommandé) : ajoute une image og dans /assets/og-image.jpg -->
+  <!-- Optionnel : ajoute une image og dans /assets/og-image.jpg -->
   <!-- <meta property="og:image" content="https://advansdata-glitch.github.io/interviewboost-landing/assets/og-image.jpg" /> -->
 
   <style>
@@ -34,8 +34,6 @@
       color: var(--text);
       background: var(--bg);
     }
-
-    a { color: inherit; }
 
     header{
       border-bottom: 1px solid var(--border);
@@ -160,9 +158,6 @@
       font-weight: 800;
       font-size: 15px;
       min-height: 46px;
-    }
-
-    .btn.primary{
       background: var(--btn);
       color: var(--btnText);
     }
@@ -246,7 +241,7 @@
       text-align: right;
     }
 
-    .rtl p{ margin-left: 0; margin-right: 0; }
+    .rtl ul { margin-left: 0; margin-right: 18px; }
   </style>
 </head>
 
@@ -282,10 +277,10 @@
       <p id="p2">Recevez un feedback immédiat pour améliorer vos réponses et gagner en confiance.</p>
 
       <div class="cta-row">
-        <a class="btn primary" id="btnAndroid" target="_blank" rel="noopener">Installer l’application</a>
+        <a class="btn" id="btnAndroid" target="_blank" rel="noopener">Installer l’application</a>
       </div>
 
-      <div class="trustline" id="trustline">
+      <div class="trustline">
         <span class="trustitem" id="t1">✅ Téléchargement via Google Play</span>
         <span class="trustitem" id="t2">✅ Rapide et simple</span>
         <span class="trustitem" id="t3">✅ Entraînement à votre rythme</span>
@@ -300,11 +295,11 @@
     <aside class="card">
       <div class="shot">
         <img
-          src="assets/app-screenshot.png"
+          id="appShot"
+          src="assets/app-screenshot-fr.png"
           alt="Aperçu de l’application InterviewBoost"
           loading="lazy"
         />
-        <div style="display:none"></div>
       </div>
 
       <div class="shot-note" id="shotNote">
@@ -330,15 +325,23 @@
 </footer>
 
 <script>
+  // Google Play URL
   const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.dataadvans.interviewboost";
 
+  // Conserver les paramètres (ex: fbclid, utm_*)
   const qs = window.location.search || "";
   const withQS = (url) => {
     if (!qs) return url;
     return url.includes("?") ? (url + "&" + qs.slice(1)) : (url + qs);
   };
 
-  // i18n
+  // Set link + year
+  const btnAndroid = document.getElementById("btnAndroid");
+  if (btnAndroid) btnAndroid.href = withQS(PLAY_STORE_URL);
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  // i18n strings + screenshot per language
   const i18n = {
     fr: {
       dir: "ltr",
@@ -358,7 +361,8 @@
         "Feedback immédiat après chaque réponse",
         "Entraînement rapide, quand vous voulez"
       ],
-      shotNote: "Astuce : utilise un vrai screenshot de l’app pour rassurer et augmenter les installations."
+      shotNote: "Astuce : utilise un vrai screenshot de l’app pour rassurer et augmenter les installations.",
+      screenshot: "assets/app-screenshot-fr.png"
     },
     en: {
       dir: "ltr",
@@ -378,7 +382,8 @@
         "Instant feedback after each answer",
         "Quick practice anytime"
       ],
-      shotNote: "Tip: a real app screenshot boosts trust and conversions."
+      shotNote: "Tip: a real app screenshot boosts trust and conversions.",
+      screenshot: "assets/app-screenshot-en.png"
     },
     ar: {
       dir: "rtl",
@@ -398,49 +403,71 @@
         "ملاحظات فورية بعد كل إجابة",
         "تدريب سريع في أي وقت"
       ],
-      shotNote: "نصيحة: لقطة شاشة حقيقية تزيد الثقة ومعدل التحويل."
+      shotNote: "نصيحة: لقطة شاشة حقيقية تزيد الثقة ومعدل التحويل.",
+      screenshot: "assets/app-screenshot-ar.png"
     }
   };
 
+  function setText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  }
+
   function setLang(lang){
     const t = i18n[lang] || i18n.fr;
+
     document.documentElement.lang = lang;
     document.body.classList.toggle("rtl", t.dir === "rtl");
 
-    document.getElementById("subtitle").textContent = t.subtitle;
-    document.getElementById("badge").textContent = t.badge;
-    document.getElementById("title").textContent = t.title;
-    document.getElementById("p1").textContent = t.p1;
-    document.getElementById("p2").textContent = t.p2;
-    document.getElementById("btnAndroid").textContent = t.btnAndroid;
+    setText("subtitle", t.subtitle);
+    setText("badge", t.badge);
+    setText("title", t.title);
+    setText("p1", t.p1);
+    setText("p2", t.p2);
+    setText("note", t.note);
+    setText("whyTitle", t.whyTitle);
+    setText("shotNote", t.shotNote);
+    setText("t1", t.t1);
+    setText("t2", t.t2);
+    setText("t3", t.t3);
 
-    document.getElementById("t1").textContent = t.t1;
-    document.getElementById("t2").textContent = t.t2;
-    document.getElementById("t3").textContent = t.t3;
+    const btn = document.getElementById("btnAndroid");
+    if (btn) btn.textContent = t.btnAndroid;
 
-    document.getElementById("note").textContent = t.note;
-    document.getElementById("whyTitle").textContent = t.whyTitle;
+    // Update screenshot according to language
+    const shot = document.getElementById("appShot");
+    if (shot) {
+      shot.src = t.screenshot;
+      // alt peut rester générique
+    }
 
+    // Update bullets
     const ul = document.getElementById("bullets");
-    ul.innerHTML = "";
-    t.bullets.forEach(b => {
-      const li = document.createElement("li");
-      li.textContent = b;
-      ul.appendChild(li);
-    });
-
-    document.getElementById("shotNote").textContent = t.shotNote;
+    if (ul) {
+      ul.innerHTML = "";
+      t.bullets.forEach(b => {
+        const li = document.createElement("li");
+        li.textContent = b;
+        ul.appendChild(li);
+      });
+    }
   }
 
-  // Init link + year
-  document.getElementById("btnAndroid").href = withQS(PLAY_STORE_URL);
-  document.getElementById("year").textContent = new Date().getFullYear();
+  function detectBrowserLang() {
+    const langs = (navigator.languages && navigator.languages.length)
+      ? navigator.languages
+      : [navigator.language || "fr"];
 
-  // Default language by browser
-  const nav = (navigator.language || "fr").toLowerCase();
-  if (nav.startsWith("ar")) setLang("ar");
-  else if (nav.startsWith("en")) setLang("en");
-  else setLang("fr");
+    const normalized = langs.map(l => String(l).toLowerCase());
+
+    if (normalized.some(l => l.startsWith("ar"))) return "ar";
+    if (normalized.some(l => l.startsWith("fr"))) return "fr";
+    if (normalized.some(l => l.startsWith("en"))) return "en";
+    return "fr";
+  }
+
+  // Apply language on load
+  setLang(detectBrowserLang());
 </script>
 </body>
 </html>
