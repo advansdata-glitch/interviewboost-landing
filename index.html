@@ -330,19 +330,13 @@
 </footer>
 
 <script>
-  // Google Play URL
   const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.dataadvans.interviewboost";
 
-  // Conserver les paramètres (ex: fbclid, utm_*)
   const qs = window.location.search || "";
   const withQS = (url) => {
     if (!qs) return url;
     return url.includes("?") ? (url + "&" + qs.slice(1)) : (url + qs);
   };
-
-  // Init links
-  document.getElementById("btnAndroid").href = withQS(PLAY_STORE_URL);
-  document.getElementById("btnPlayListing").href = withQS(PLAY_STORE_URL);
 
   // i18n
   const i18n = {
@@ -354,7 +348,6 @@
       p1: "Entraînez-vous avec InterviewBoost grâce à des simulations réalistes.",
       p2: "Recevez un feedback immédiat pour améliorer vos réponses et gagner en confiance.",
       btnAndroid: "Installer l’application",
-      btnPlayListing: "Voir sur Google Play",
       t1: "✅ Téléchargement via Google Play",
       t2: "✅ Rapide et simple",
       t3: "✅ Entraînement à votre rythme",
@@ -375,7 +368,6 @@
       p1: "Practice with InterviewBoost using realistic interview simulations.",
       p2: "Get instant feedback to improve your answers and build confidence.",
       btnAndroid: "Install the app",
-      btnPlayListing: "View on Google Play",
       t1: "✅ Official Google Play listing",
       t2: "✅ Quick & simple",
       t3: "✅ Practice at your pace",
@@ -396,7 +388,6 @@
       p1: "تدرّب مع InterviewBoost عبر محاكاة واقعية للمقابلات.",
       p2: "احصل على ملاحظات فورية لتحسين إجاباتك وزيادة ثقتك.",
       btnAndroid: "تثبيت التطبيق",
-      btnPlayListing: "عرض على Google Play",
       t1: "✅ عبر Google Play الرسمي",
       t2: "✅ سريع وسهل",
       t3: "✅ تدرب على وتيرتك",
@@ -422,7 +413,6 @@
     document.getElementById("p1").textContent = t.p1;
     document.getElementById("p2").textContent = t.p2;
     document.getElementById("btnAndroid").textContent = t.btnAndroid;
-    document.getElementById("btnPlayListing").textContent = t.btnPlayListing;
 
     document.getElementById("t1").textContent = t.t1;
     document.getElementById("t2").textContent = t.t2;
@@ -442,6 +432,8 @@
     document.getElementById("shotNote").textContent = t.shotNote;
   }
 
+  // Init link + year
+  document.getElementById("btnAndroid").href = withQS(PLAY_STORE_URL);
   document.getElementById("year").textContent = new Date().getFullYear();
 
   // Default language by browser
