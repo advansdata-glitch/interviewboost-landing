@@ -453,18 +453,20 @@
     }
   }
 
-  function detectBrowserLang() {
-    const langs = (navigator.languages && navigator.languages.length)
-      ? navigator.languages
-      : [navigator.language || "fr"];
+function detectBrowserLang() {
+  const langs = (navigator.languages && navigator.languages.length)
+    ? navigator.languages
+    : [navigator.language || "fr"];
 
-    const normalized = langs.map(l => String(l).toLowerCase());
+  const normalized = langs.map(l => String(l).toLowerCase());
 
-    if (normalized.some(l => l.startsWith("ar"))) return "ar";
-    if (normalized.some(l => l.startsWith("fr"))) return "fr";
-    if (normalized.some(l => l.startsWith("en"))) return "en";
-    return "fr";
-  }
+  // priorité FR → EN → AR
+  if (normalized.some(l => l.startsWith("fr"))) return "fr";
+  if (normalized.some(l => l.startsWith("en"))) return "en";
+  if (normalized.some(l => l.startsWith("ar"))) return "ar";
+
+  return "fr";
+}
 
   // Apply language on load
   setLang(detectBrowserLang());
